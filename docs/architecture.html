@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAI Tutor - Architecture Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #475569;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        .architecture-diagram {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .component-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+        
+        .component-card h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        
+        .flow-diagram {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .flow-step {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+        
+        .flow-step::after {
+            content: '↓';
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: #6b7280;
+        }
+        
+        .flow-step:last-child::after {
+            display: none;
+        }
+        
+        .database-schema {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .table-def {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .table-def h5 {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .security-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .security-item {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        
+        code {
+            background: #f1f5f9;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #f59e0b;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>EduAI Tutor Architecture</h1>
+            <p>Comprehensive technical documentation for the AI-powered PDF learning assistant</p>
+        </div>
+
+        <div class="section">
+            <h2>🏗️ System Architecture Overview</h2>
+            <p>EduAI Tutor follows a modern, scalable architecture pattern with clear separation of concerns between frontend, backend, and AI services.</p>
+            
+            <div class="architecture-diagram">
+<pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                FRONTEND LAYER                                   │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                │
+│  │   React App     │  │   TypeScript    │  │  Tailwind CSS   │                │
+│  │   (Vite Build)  │  │   (Type Safety) │  │   (Styling)     │                │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘                │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                               BACKEND LAYER                                     │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                │
+│  │   Supabase      │  │   PostgreSQL    │  │   Row Level     │                │
+│  │   (BaaS)        │  │   (Database)    │  │   Security      │                │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘                │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                              AI SERVICES LAYER                                  │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                │
+│  │  Azure OpenAI   │  │   ElevenLabs    │  │    PDF.js       │                │
+│  │   (GPT-4o)      │  │   (Voice AI)    │  │   (Parsing)     │                │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘                │
+└─────────────────────────────────────────────────────────────────────────────────┘
+</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Technology Stack</h2>
+            
+            <h3>Frontend Technologies</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>React 18.3.1</strong><br>
+                    Modern UI framework with hooks
+                </div>
+                <div class="tech-item">
+                    <strong>TypeScript</strong><br>
+                    Type-safe development
+                </div>
+                <div class="tech-item">
+                    <strong>Vite</strong><br>
+                    Fast build tool and dev server
+                </div>
+                <div class="tech-item">
+                    <strong>Tailwind CSS</strong><br>
+                    Utility-first styling
+                </div>
+                <div class="tech-item">
+                    <strong>Framer Motion</strong><br>
+                    Smooth animations
+                </div>
+                <div class="tech-item">
+                    <strong>React Router</strong><br>
+                    Client-side routing
+                </div>
+            </div>
+
+            <h3>Backend & Database</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>Supabase</strong><br>
+                    Backend-as-a-Service platform
+                </div>
+                <div class="tech-item">
+                    <strong>PostgreSQL</strong><br>
+                    Relational database
+                </div>
+                <div class="tech-item">
+                    <strong>Row Level Security</strong><br>
+                    Data privacy and access control
+                </div>
+                <div class="tech-item">
+                    <strong>Real-time</strong><br>
+                    Live data synchronization
+                </div>
+            </div>
+
+            <h3>AI & Voice Services</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>Azure OpenAI</strong><br>
+                    GPT-4o for text processing
+                </div>
+                <div class="tech-item">
+                    <strong>ElevenLabs</strong><br>
+                    Natural voice synthesis
+                </div>
+                <div class="tech-item">
+                    <strong>PDF.js</strong><br>
+                    Client-side PDF parsing
+                </div>
+                <div class="tech-item">
+                    <strong>Web Speech API</strong><br>
+                    Voice recognition
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Database Schema</h2>
+            <p>The database is designed with security and scalability in mind, using PostgreSQL with Row Level Security.</p>
+            
+            <div class="database-schema">
+                <div class="table-def">
+                    <h5>user_profiles</h5>
+                    <p><code>id (uuid, PK)</code> - References auth.users</p>
+                    <p><code>full_name (text)</code> - User's display name</p>
+                    <p><code>avatar_url (text)</code> - Profile picture URL</p>
+                    <p><code>institution (text)</code> - Educational institution</p>
+                    <p><code>created_at, updated_at (timestamptz)</code> - Timestamps</p>
+                </div>
+
+                <div class="table-def">
+                    <h5>documents</h5>
+                    <p><code>id (uuid, PK)</code> - Document identifier</p>
+                    <p><code>user_id (uuid, FK)</code> - Owner reference</p>
+                    <p><code>title, filename (text)</code> - Document metadata</p>
+                    <p><code>content (text)</code> - Extracted PDF text</p>
+                    <p><code>file_size (integer)</code> - File size in bytes</p>
+                    <p><code>upload_date, created_at (timestamptz)</code> - Timestamps</p>
+                </div>
+
+                <div class="table-def">
+                    <h5>summaries</h5>
+                    <p><code>id (uuid, PK)</code> - Summary identifier</p>
+                    <p><code>document_id (uuid, FK)</code> - Source document</p>
+                    <p><code>content (text)</code> - AI-generated summary</p>
+                    <p><code>voice_url (text)</code> - Audio narration URL</p>
+                    <p><code>created_at (timestamptz)</code> - Creation timestamp</p>
+                </div>
+
+                <div class="table-def">
+                    <h5>quizzes</h5>
+                    <p><code>id (uuid, PK)</code> - Quiz identifier</p>
+                    <p><code>document_id (uuid, FK)</code> - Source document</p>
+                    <p><code>title (text)</code> - Quiz title</p>
+                    <p><code>questions (jsonb)</code> - Question array</p>
+                    <p><code>created_at (timestamptz)</code> - Creation timestamp</p>
+                </div>
+
+                <div class="table-def">
+                    <h5>quiz_results</h5>
+                    <p><code>id (uuid, PK)</code> - Result identifier</p>
+                    <p><code>quiz_id (uuid, FK)</code> - Quiz reference</p>
+                    <p><code>user_id (uuid, FK)</code> - User reference</p>
+                    <p><code>score (integer)</code> - Percentage score</p>
+                    <p><code>answers (jsonb)</code> - User answers</p>
+                    <p><code>completed_at (timestamptz)</code> - Completion time</p>
+                </div>
+
+                <div class="table-def">
+                    <h5>conversations</h5>
+                    <p><code>id (uuid, PK)</code> - Conversation identifier</p>
+                    <p><code>document_id (uuid, FK)</code> - Context document</p>
+                    <p><code>user_id (uuid, FK)</code> - User reference</p>
+                    <p><code>messages (jsonb)</code> - Chat history</p>
+                    <p><code>created_at, updated_at (timestamptz)</code> - Timestamps</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔒 Security Architecture</h2>
+            <p>Security is implemented at multiple layers to ensure data privacy and system integrity.</p>
+            
+            <div class="security-features">
+                <div class="security-item">
+                    <strong>Row Level Security</strong><br>
+                    Database-level access control
+                </div>
+                <div class="security-item">
+                    <strong>OAuth Integration</strong><br>
+                    Google & Microsoft SSO
+                </div>
+                <div class="security-item">
+                    <strong>JWT Tokens</strong><br>
+                    Secure session management
+                </div>
+                <div class="security-item">
+                    <strong>HTTPS Only</strong><br>
+                    Encrypted data transmission
+                </div>
+                <div class="security-item">
+                    <strong>API Key Protection</strong><br>
+                    Environment variable security
+                </div>
+                <div class="security-item">
+                    <strong>Input Validation</strong><br>
+                    Client and server-side checks
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>Security Policies:</strong> Each table has specific RLS policies ensuring users can only access their own data. Authentication is required for all protected routes, and API keys are securely managed through environment variables.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 Data Flow Architecture</h2>
+            <p>Understanding how data flows through the system from user interaction to AI processing.</p>
+            
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <strong>1. User Authentication</strong><br>
+                    User signs in via email, Google, or Microsoft OAuth. Supabase handles authentication and creates/updates user profile.
+                </div>
+                
+                <div class="flow-step">
+                    <strong>2. PDF Upload</strong><br>
+                    User uploads PDF file. Frontend validates file type and size, then extracts text using PDF.js library.
+                </div>
+                
+                <div class="flow-step">
+                    <strong>3. Content Storage</strong><br>
+                    Extracted text and metadata are stored in Supabase database with user association and RLS protection.
+                </div>
+                
+                <div class="flow-step">
+                    <strong>4. AI Processing</strong><br>
+                    Azure OpenAI GPT-4o generates summary. ElevenLabs creates voice narration. Both are stored for future access.
+                </div>
+                
+                <div class="flow-step">
+                    <strong>5. Interactive Features</strong><br>
+                    User can chat with AI about document, generate quizzes, and track learning progress. All interactions are logged.
+                </div>
+                
+                <div class="flow-step">
+                    <strong>6. Real-time Sync</strong><br>
+                    All user data is synchronized in real-time across devices using Supabase real-time subscriptions.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Component Architecture</h2>
+            <p>The frontend is organized into reusable components with clear separation of concerns.</p>
+            
+            <div class="component-grid">
+                <div class="component-card">
+                    <h4>Layout Components</h4>
+                    <p><strong>Layout:</strong> Main application shell with navigation</p>
+                    <p><strong>ProtectedRoute:</strong> Authentication guard for private pages</p>
+                    <p><strong>Navigation:</strong> Responsive navigation with user menu</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Page Components</h4>
+                    <p><strong>Home:</strong> Landing page with features and testimonials</p>
+                    <p><strong>Dashboard:</strong> User overview with statistics and quick actions</p>
+                    <p><strong>Upload:</strong> PDF upload with progress tracking</p>
+                    <p><strong>Chat:</strong> AI conversation interface</p>
+                    <p><strong>Quiz:</strong> Interactive quiz taking and results</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Service Layers</h4>
+                    <p><strong>Supabase Client:</strong> Database and auth operations</p>
+                    <p><strong>AI Services:</strong> Azure OpenAI and ElevenLabs integration</p>
+                    <p><strong>PDF Parser:</strong> Text extraction from PDF files</p>
+                    <p><strong>Auth Hook:</strong> Authentication state management</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Utility Components</h4>
+                    <p><strong>Toast Notifications:</strong> User feedback system</p>
+                    <p><strong>Loading States:</strong> Progress indicators</p>
+                    <p><strong>Error Boundaries:</strong> Error handling and recovery</p>
+                    <p><strong>Form Validation:</strong> Input validation and feedback</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Deployment Architecture</h2>
+            <p>The application is deployed using modern CI/CD practices with automatic builds and deployments.</p>
+            
+            <div class="component-grid">
+                <div class="component-card">
+                    <h4>Build Process</h4>
+                    <p>Vite builds the React application into optimized static assets. TypeScript compilation ensures type safety. Tailwind CSS is purged for minimal bundle size.</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Hosting</h4>
+                    <p>Netlify hosts the static frontend with global CDN distribution. Automatic HTTPS, custom domains, and form handling are included.</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Backend Services</h4>
+                    <p>Supabase provides managed PostgreSQL database, authentication, and real-time subscriptions. No server management required.</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Environment Management</h4>
+                    <p>Environment variables are securely managed through Netlify's dashboard. API keys and secrets are never exposed in the frontend code.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📈 Performance Optimizations</h2>
+            
+            <h3>Frontend Optimizations</h3>
+            <ul style="margin-left: 2rem; margin-top: 1rem;">
+                <li><strong>Code Splitting:</strong> React Router enables automatic code splitting by route</li>
+                <li><strong>Lazy Loading:</strong> Components and images are loaded on demand</li>
+                <li><strong>Bundle Optimization:</strong> Vite's tree shaking removes unused code</li>
+                <li><strong>Asset Optimization:</strong> Images are optimized and served via CDN</li>
+                <li><strong>Caching Strategy:</strong> Static assets are cached with long expiration times</li>
+            </ul>
+
+            <h3>Database Optimizations</h3>
+            <ul style="margin-left: 2rem; margin-top: 1rem;">
+                <li><strong>Indexing:</strong> Strategic indexes on frequently queried columns</li>
+                <li><strong>Query Optimization:</strong> Efficient queries with proper joins and filters</li>
+                <li><strong>Connection Pooling:</strong> Supabase manages database connections efficiently</li>
+                <li><strong>Real-time Subscriptions:</strong> Only subscribe to necessary data changes</li>
+            </ul>
+
+            <h3>AI Service Optimizations</h3>
+            <ul style="margin-left: 2rem; margin-top: 1rem;">
+                <li><strong>Request Batching:</strong> Multiple operations combined when possible</li>
+                <li><strong>Response Caching:</strong> AI responses cached to avoid redundant calls</li>
+                <li><strong>Streaming:</strong> Large responses streamed for better user experience</li>
+                <li><strong>Error Handling:</strong> Graceful degradation when AI services are unavailable</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔮 Future Architecture Considerations</h2>
+            
+            <div class="component-grid">
+                <div class="component-card">
+                    <h4>Scalability</h4>
+                    <p>Microservices architecture for AI processing, horizontal scaling with load balancers, and database sharding for large datasets.</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Enhanced AI</h4>
+                    <p>Integration with multiple AI providers, custom model fine-tuning, and advanced natural language processing capabilities.</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Mobile Apps</h4>
+                    <p>React Native mobile applications, offline functionality, and push notifications for learning reminders.</p>
+                </div>
+                
+                <div class="component-card">
+                    <h4>Analytics</h4>
+                    <p>Advanced learning analytics, personalized recommendations, and detailed progress tracking with machine learning insights.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📚 API Documentation</h2>
+            
+            <h3>Authentication Endpoints</h3>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+                <p><code>POST /auth/signup</code> - User registration</p>
+                <p><code>POST /auth/signin</code> - User login</p>
+                <p><code>POST /auth/signout</code> - User logout</p>
+                <p><code>GET /auth/user</code> - Get current user</p>
+            </div>
+
+            <h3>Document Management</h3>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+                <p><code>POST /documents</code> - Upload new document</p>
+                <p><code>GET /documents</code> - List user documents</p>
+                <p><code>GET /documents/:id</code> - Get specific document</p>
+                <p><code>DELETE /documents/:id</code> - Delete document</p>
+            </div>
+
+            <h3>AI Services</h3>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+                <p><code>POST /ai/summarize</code> - Generate document summary</p>
+                <p><code>POST /ai/quiz</code> - Generate quiz questions</p>
+                <p><code>POST /ai/chat</code> - Chat with document</p>
+                <p><code>POST /voice/synthesize</code> - Generate voice narration</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
